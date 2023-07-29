@@ -1,8 +1,8 @@
 import {Router } from 'express';
 import { UserController } from '../controller/user.controller';
-import checkValidator from "../utils/checkValidator";
 
-const router = Router();
+import {createUserValidator} from '../middleware/validator/userValidator';
+
 class UserRouter{
     public router:Router;
     constructor(){
@@ -14,10 +14,12 @@ class UserRouter{
         this.deleteRoutes();
     }
     getRoutes(){
-        this.router.get('/',checkValidator,UserController.login);
+        
     }
 
-    postRoutes(){}
+    postRoutes(){
+        
+    }
     patchRoutes(){}
     putRoutes(){}
     deleteRoutes(){}

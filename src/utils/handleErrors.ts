@@ -31,6 +31,7 @@ export default (err: CustomError, request: Request, response: Response, next: Ne
   if (process.env.NODE_ENV === 'development') {
     sendErrorForDevelopment(err, response);
   } else if (process.env.NODE_ENV === 'production') {
+    
     sendErrorForProduction(err, response);
   }
 };

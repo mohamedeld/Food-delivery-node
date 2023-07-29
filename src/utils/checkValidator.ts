@@ -1,17 +1,14 @@
-import { Request, Response, NextFunction } from 'express';
-import { validationResult, Result, ValidationError } from 'express-validator';
+import { validationResult } from 'express-validator';
 
-const checkValidator = (request: Request, response: Response, next: NextFunction) => {
-  const result: Result<ValidationError> = validationResult(request);
-  if (!result.isEmpty()) {
-    const errorString = result.array().map((obj: ValidationError) => obj.msg).join('');
-    const error: Error & { statusCode?: number } = new Error(errorString);
-    error.statusCode = 502;
 
+
+export default (request,response,next)=>{
+  const errors = validationResult(request).array();
+  if (errors.length !== 0) {
+    const errorString = errors.reduce((acc, obj) => acc + obj.msg, '');
+    const error = new Error(errorString);
     next(error);
-  } else {
-    next();
+  }else{
+    next(); 
   }
-};
-
-export default checkValidator;
+}

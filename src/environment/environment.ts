@@ -2,7 +2,8 @@ import { DevEnvironment } from "./environment.dev";
 import { ProdEnvironment } from "./environment.prod";
 
 export interface Environment{
-    db_uri:string
+    db_uri:string,
+    
 }
 
 export function getEnvironmentVariable(){
