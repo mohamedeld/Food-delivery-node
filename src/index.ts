@@ -1,11 +1,11 @@
 import { getEnvironmentVariable } from "./environment/environment";
 import { Server } from "./server";
-
+import config from "./config";
 
 const server = new Server().app;
 
-const PORT = process.env.PORT || 8000;
+const PORT = config.PORT || 8000;
 
-server.listen(PORT,() => {
-    console.log(`Server is running on port ${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
