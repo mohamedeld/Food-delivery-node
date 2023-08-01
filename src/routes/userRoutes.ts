@@ -1,29 +1,42 @@
-import {Router } from 'express';
+import { Router } from 'express';
 import { UserController } from '../controller/user.controller';
+import checkValidator from '../middleware/checkValidator.middleware';
+import { AuthController } from '../controller/authController';
 
-import {createUserValidator} from '../middleware/validator/userValidator';
+class UserRouter {
+  public router: Router;
+  constructor() {
+    this.router = Router();
+    this.getRoutes();
+    this.postRoutes();
+    this.patchRoutes();
+    this.putRoutes();
+    this.deleteRoutes();
+  }
+  getRoutes() {
+    this.router
+      .route('/')
+      .get(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        checkValidator,
+        UserController.getAllUsers,
+      );
 
-class UserRouter{
-    public router:Router;
-    constructor(){
-        this.router = Router();
-        this.getRoutes();
-        this.postRoutes();
-        this.patchRoutes();
-        this.putRoutes();
-        this.deleteRoutes();
-    }
-    getRoutes(){
-        
-    }
+    this.router
+      .route('/:id')
+      .get(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        checkValidator,
+        UserController.getUser,
+      );
+  }
 
-    postRoutes(){
-        
-    }
-    patchRoutes(){}
-    putRoutes(){}
-    deleteRoutes(){}
+  postRoutes() {}
+  patchRoutes() {}
+  putRoutes() {}
+  deleteRoutes() {}
 }
 
 export default new UserRouter().router;
-

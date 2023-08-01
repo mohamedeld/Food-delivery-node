@@ -1,9 +1,11 @@
-import { Router } from "express";
+import { Router } from 'express';
 import {
   createUserValidator,
   loginValidator,
-} from "../middleware/validator/userValidator";
-import { AuthController } from "../controller/authController";
+  verifyUserEmail,
+} from '../middleware/validator/userValidator';
+import validate from '../middleware/checkValidator.middleware';
+import { AuthController } from '../controller/authController';
 class AuthRouter {
   public router: Router;
   constructor() {
@@ -17,10 +19,22 @@ class AuthRouter {
   getRoutes() {}
 
   postRoutes() {
-    this.router.post("/signup", createUserValidator, AuthController.signup);
-    this.router.post("/login", loginValidator, AuthController.login);
+    this.router.post(
+      '/signup',
+      createUserValidator,
+      validate,
+      AuthController.signup,
+    );
+    this.router.post('/login', loginValidator, validate, AuthController.login);
   }
-  patchRoutes() {}
+  patchRoutes() {
+    this.router.patch(
+      '/verify',
+      verifyUserEmail,
+      validate,
+      AuthController.verify,
+    );
+  }
   putRoutes() {}
   deleteRoutes() {}
 }

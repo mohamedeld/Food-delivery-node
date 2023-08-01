@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
-import { validationResult } from "express-validator";
-export const validate: RequestHandler = (req, res, next) => {
+import { RequestHandler } from 'express';
+import { validationResult } from 'express-validator';
+const validate: RequestHandler = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json({
@@ -9,3 +9,5 @@ export const validate: RequestHandler = (req, res, next) => {
   }
   next();
 };
+
+export default validate;
