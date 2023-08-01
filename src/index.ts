@@ -1,6 +1,5 @@
-import { getEnvironmentVariable } from "./environment/environment";
-import { Server } from "./server";
-import config from "./config";
+import { Server } from './server';
+import config from './config';
 
 const server = new Server().app;
 
