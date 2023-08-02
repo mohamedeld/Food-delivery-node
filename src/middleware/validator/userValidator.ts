@@ -1,5 +1,11 @@
-import { body } from 'express-validator';
+import { param, body } from 'express-validator';
+import express from 'express';
+import bcrypt from 'bcrypt';
 import User from '../../model/userModel';
+
+interface IUserRequest extends express.Request {
+  user: any;
+}
 
 export const createUserValidator = [
   body('name').notEmpty().withMessage('Please enter your name'),
@@ -63,4 +69,37 @@ export const verifyUserEmail = [
     .withMessage('please enter your email')
     .isEmail()
     .withMessage('please enter a valid email'),
+];
+
+export const userChangePassword = [
+  param('id')
+    .notEmpty()
+    .withMessage('please enter your id ')
+    .isMongoId()
+    .withMessage('id should be mongo id'),
+  body('currentPassword')
+    .notEmpty()
+    .withMessage('please enter your current password'),
+  body('confirmPassword')
+    .notEmpty()
+    .withMessage('please enter your confirm password'),
+  body('password')
+    .notEmpty()
+    .withMessage('please enter your password')
+    .custom(async (password, { req }) => {
+      const user = await User.findById(req.params.id);
+      if (!user) {
+        return Promise.reject(new Error('please check your id'));
+      }
+      const isCorrectPassword = await bcrypt.compare(
+        req.body.currentPassword,
+        user.password,
+      );
+      if (!isCorrectPassword) {
+        throw new Error('incorrect password');
+      }
+      if (password !== req.body.confirmPassword) {
+        throw new Error('password does not match confirm password');
+      }
+    }),
 ];

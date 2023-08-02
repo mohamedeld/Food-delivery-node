@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { UserController } from '../controller/user.controller';
 import checkValidator from '../middleware/checkValidator.middleware';
 import { AuthController } from '../controller/authController';
+import { userChangePassword } from '../middleware/validator/userValidator';
 
 class UserRouter {
   public router: Router;
@@ -20,7 +21,6 @@ class UserRouter {
         AuthController.protected,
         AuthController.allowedTo('user'),
         checkValidator,
-        UserController.getAllUsers,
       );
 
     this.router
@@ -35,7 +35,17 @@ class UserRouter {
 
   postRoutes() {}
   patchRoutes() {}
-  putRoutes() {}
+  putRoutes() {
+    this.router
+      .route('/change-password/:id')
+      .put(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        userChangePassword,
+        checkValidator,
+        UserController.changeUserPassword,
+      );
+  }
   deleteRoutes() {}
 }
 
