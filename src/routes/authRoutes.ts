@@ -26,6 +26,20 @@ class AuthRouter {
       AuthController.signup,
     );
     this.router.post('/login', loginValidator, validate, AuthController.login);
+    this.router
+      .route('/forget-password')
+      .post(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        AuthController.forgetPassword,
+      );
+    this.router
+      .route('/verify-reset-code')
+      .post(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        AuthController.verifyRestCode,
+      );
   }
   patchRoutes() {
     this.router.patch(
@@ -35,7 +49,15 @@ class AuthRouter {
       AuthController.verify,
     );
   }
-  putRoutes() {}
+  putRoutes() {
+    this.router
+      .route('/reset-password')
+      .put(
+        AuthController.protected,
+        AuthController.allowedTo('user'),
+        AuthController.resetPassword,
+      );
+  }
   deleteRoutes() {}
 }
 export default new AuthRouter().router;
