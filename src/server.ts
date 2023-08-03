@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import userRouter from './routes/userRoutes';
 import globalHandleError from './utils/handleErrors';
 import authRouter from './routes/authRoutes';
+import bannerRouter from './routes/bandRoutes';
 import cors from 'cors';
 import config from './config';
 console.log(config);
@@ -38,6 +39,7 @@ export class Server {
   setRoutes() {
     this.app.use('/api/v1/auth', authRouter);
     this.app.use('/api/v1/users', userRouter);
+    this.app.use('/api/v1/banner', bannerRouter);
   }
   error404Handler() {
     this.app.use((request: Request, response: Response) => {
